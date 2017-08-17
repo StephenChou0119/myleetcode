@@ -48,6 +48,56 @@ void insertsort(int *nums, int numsSize)
 
 }
 
+void shellsort(int *nums, int numsSize)
+{
+	//skip five steps
+	int i = 0, j = 0, k = 0;
+	for(;k<5;++k){
+		i =k;
+		int arraySize = 0;
+		for(; i<numsSize; i+=5){
+			++arraySize;
+		}
+		int *array = (int *)malloc(sizeof(int)*arraySize);
+		i = k;
+		j = 0;
+		for(; i<numsSize; i+=5,++j){
+			array[j] = nums[i];
+		}
+		insertsort(array, arraySize);
+		i = k;
+		j = 0;
+		for(; i<numsSize; i+=5,++j){
+			nums[i] = array[j];
+		}
+	}
+	i = 0;
+	j = 0;
+	k = 0;
+	//skip three steps
+	for(;k<3;++k){
+		i =k;
+		int arraySize = 0;
+		for(; i<numsSize; i+=3){
+			++arraySize;
+		}
+		int *array = (int *)malloc(sizeof(int)*arraySize);
+		i = k;
+		j = 0;
+		for(; i<numsSize; i+=3,++j){
+			array[j] = nums[i];
+		}
+		insertsort(array, arraySize);
+		i = k;
+		j = 0;
+		for(; i<numsSize; i+=3,++j){
+			nums[i] = array[j];
+		}
+	}
+	//skip one steps, it means insertsort itself
+	insertsort(nums, numsSize);
+
+}
 
 int arrayPairSum(int* nums, int numsSize) {
 	int choice = 0;
@@ -60,6 +110,9 @@ int arrayPairSum(int* nums, int numsSize) {
 		break;
 	case 2:
 		insertsort(nums, numsSize);
+		break;
+	case 3:
+		shellsort(nums, numsSize);
 		break;
 	default:
 		break;
