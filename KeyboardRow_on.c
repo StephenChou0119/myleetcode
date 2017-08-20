@@ -3,15 +3,10 @@
  * Note: The returned array must be malloced, assume caller calls free().
  */
 #define NULL (void*)(0)
-#define assert_param(expr) ((expr) ? (void)0 : assert_failed((uint8_t *)__FILE__, __LINE__))
- #define IS_LETTER(letter) (64<letter&&letter<91)||(letter>96&&letter<123);
-
-
 
 #include <stdio.h>
 #include <malloc.h>
 #include <string.h>
-#include <stdint.h>
 
 typedef struct words_return
  {
@@ -19,43 +14,32 @@ typedef struct words_return
  	struct words_return *next;
  }words_TypeDef;
 
-void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,*/
-    printf("Wrong parameters value: file %s on line %d\r\n", file, line) ;
-
-  /* Infinite loop */
-  while (1)
-  {
-  }
-}
-
-int letter_num(char letter)
+int belongto(char word)
 {
-    assert_param(letter);
-    int num[] = {
-        11,24,22,13,3,14,15,16,8,17,18,19,26,25,9,10,1,4,12,5,7,23,2,21,6,20,
-        37,50,48,39,29,40,41,42,34,43,44,45,52,51,35,36,27,30,38,31,33,49,28,47,32,46
-        };
-    if(letter<91){
-        return num[letter-65];
-    }else if(letter>96){
-        return num[letter-71];//letter-96+26-1
-    }else{
-        return 0;
-    }
-
-}
-int belongto(char letter)
-{
-    int num = letter_num(letter);
-    if(num<11||(num<37&&num>26)){
-        return 1;
-    }else if(num<20||(num>36&&num<46)){
-        return 2;
-    }else{
-        return 3;
-    }
+	//
+	char row1[] ="qwertyuiopQWERTYUIOP";
+	char row2[] = "asdfghjklASDFGHJKL";
+	char row3[] = "zxcvbnmZXCVBNM";
+	int i = 0 ;//用于循环比较，以确定word在哪一组
+	for(;i<20;++i){
+		if(word == row1[i]){
+			return 1;
+		}
+	}
+	i = 0;
+	for(;i<18;++i){
+		if(word == row2[i]){
+			return 2;
+		}
+	}
+	i = 0;
+	for(;i<14;++i){
+		if(word == row3[i]){
+			return 3;
+		}
+	}
+	printf("请输入字母");
+	return 0;
 }
  
 char** findWords(char** words, int wordsSize, int* returnSize) {
